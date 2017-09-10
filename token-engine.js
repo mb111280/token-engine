@@ -53,12 +53,10 @@ var server = http.createServer(function (req, res) {
         // collect  tokenCode from  query stsring
         tokenCode = urlObj['query']['tokenCode']; // i.e. ?tokencode=1
         // Test if submitted token code is in valid range
-        if ( tokenCode > 0 && tokenCode < (itemList.length + 1)) {
-            console.log("tokenCode past validation");
+        if ( validateToken(tokenCode,itemList.length) ) {
             item = itemList[tokenCode -1];
             console.log("token exhanged for item: " + item.valueOf())
         } else {
-            console.log("tokenCode failed validation");
             item = "Sorry, invalid token";
         }
     }
@@ -86,3 +84,14 @@ server.listen(port, localIP);
 
 // print message to terminal that server is running
 console.log('Server running at http://'+ localIP +':'+ port +'/');
+
+
+function validateToken(token,number) {
+    if ( token > 0 && token < (number)) {
+        console.log("token past validation");
+        return 1;
+    } else {
+        console.log("token failed validation");
+        return 0;
+    }
+}
