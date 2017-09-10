@@ -17,6 +17,10 @@ HOW TO START TOKEN ENGINE:
 var http = require('http');
 var url = require("url");
 
+//Include my token library
+var token = require("./token");
+
+
 // define the 
 var localIP = "127.0.0.1"; // local host
 var port = 8080;
@@ -53,7 +57,7 @@ var server = http.createServer(function (req, res) {
         // collect  tokenCode from  query stsring
         tokenCode = urlObj['query']['tokenCode']; // i.e. ?tokencode=1
         // Test if submitted token code is in valid range
-        if ( validateToken(tokenCode,itemList.length) ) {
+        if ( token.validateToken(tokenCode,itemList.length) ) {
             item = itemList[tokenCode -1];
             console.log("token exhanged for item: " + item.valueOf())
         } else {
@@ -86,12 +90,3 @@ server.listen(port, localIP);
 console.log('Server running at http://'+ localIP +':'+ port +'/');
 
 
-function validateToken(token,number) {
-    if ( token > 0 && token < (number)) {
-        console.log("token past validation");
-        return 1;
-    } else {
-        console.log("token failed validation");
-        return 0;
-    }
-}
