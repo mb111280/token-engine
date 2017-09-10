@@ -1,15 +1,13 @@
 /************************************************
 FILENAME
-server_querystring.js
+token-engine.js
 
 DESCRIPTION
-creates a web server that
-display "Hello Dynamic World Wide Web"
-it includes a web form to accept a new name from the user via the querystring and displays it.
-the new name will be stored in a local variable 'defaultName'.
+Creates a web service that requests a token code from user via a web form.
+If token is submitted, returns value assigned to that token.
 
-HOW TO START SERVER:
-1) from terminal run 'node server_querystring.js'
+HOW TO START TOKEN ENGINE:
+1) from terminal run 'node token-engine.js'
 2) open web browser visit http://127.0.0.1:8080
 
 *************************************************/
@@ -20,15 +18,15 @@ var http = require('http');
 var url = require("url");
 
 // define the 
-var localIP = "127.0.0.1"; // 127.0.0.1 is used when
+var localIP = "127.0.0.1"; // local host
 var port = 8080;
 
-var defaultName = "Dynamic World Wide Web";
+var defaultName = "Token Engine";
 
 var server = http.createServer(function (req, res) {
     
     // Print to terminal that server has been requested
-    console.log("We've got a request on " + req.url);
+    console.log("Recieved request on " + req.url);
 
     /********************************************/
     /*  GET DATA FROM THE URL'S QUERYSTRING     */
@@ -58,8 +56,8 @@ var server = http.createServer(function (req, res) {
 
     // HTTP response body
     res.write('<html>\n<body>\n');
-    res.write('<h1>Hello ' + defaultName + '<h1>\n');
-    res.write('<form method="GET">\n<input type="text" placeholder="type a name" name="thename">\n<input type="submit" value="submit new name">\n</form>\n');
+    res.write('<h1>' + defaultName + '<h1>\n');
+    res.write('<form method="GET">\n<input type="text" placeholder="Token code:" name="tokencode">\n<input type="submit" value="submit token code">\n</form>\n');
     res.write('</body>\n</html>');
     
     // HTTP response finished
