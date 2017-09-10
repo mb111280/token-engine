@@ -22,6 +22,9 @@ var localIP = "127.0.0.1"; // local host
 var port = 8080;
 
 var defaultName = "Token Engine";
+var tokenCode = "";
+var itemList = ["item1","item2","item3","item4","item5"]
+var item = "";
 
 var server = http.createServer(function (req, res) {
     
@@ -39,12 +42,25 @@ var server = http.createServer(function (req, res) {
             console.log( q + " = " + urlObj['query'][q]);
     }
     
-    // update the variable defaultName if new name is passed from querystring
-    if (urlObj['query']['thename'] != undefined) {
+    // update the variable tokenCode if token is passed from querystring
+    // and assign item  from itemList
+    if (urlObj['query']['tokenCode'] != undefined) {
         
-        console.log("updating 'defaultName' variable to " + urlObj['query']['thename']);
-        
-        defaultName = urlObj['query']['thename']; // take the name from the URL querystring i.e. ?thename=tony
+        console.log("tokenCode received: " + urlObj['query']['tokenCode']);
+
+        // reset tokenCode before collecting value
+        tokenCode = "";
+        // collect  tokenCode from  query stsring
+        tokenCode = urlObj['query']['tokenCode']; // i.e. ?tokencode=1
+        // Test if submitted token code is in valid range
+        if ( tokenCode > 0 && tokenCode < (itemList.length + 1)) {
+            console.log("tokenCode past validation");
+            item = itemList[tokenCode -1];
+            console.log("token exhanged for item: " + item.valueOf())
+        } else {
+            console.log("tokenCode failed validation");
+            item = "Sorry, invalid token";
+        }
     }
     
     /************************************/
@@ -57,7 +73,8 @@ var server = http.createServer(function (req, res) {
     // HTTP response body
     res.write('<html>\n<body>\n');
     res.write('<h1>' + defaultName + '<h1>\n');
-    res.write('<form method="GET">\n<input type="text" placeholder="Token code:" name="tokencode">\n<input type="submit" value="submit token code">\n</form>\n');
+    res.write('<h1>Token Code: ' + tokenCode + '= ' + item.valueOf() + '<h1>\n');
+    res.write('<form method="GET">\n<input type="text" placeholder="Token code:" name="tokenCode">\n<input type="submit" value="submit token code">\n</form>\n');
     res.write('</body>\n</html>');
     
     // HTTP response finished
